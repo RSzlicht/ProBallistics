@@ -11,11 +11,11 @@ file3 = 'Forrestal_Rc_ 46_2.csv'
 
 # Define arrays
 forrestal_Rc_36_6_data = []
-forrestal_Rc_36_6_data_array =[]
+forrestal_Rc_36_6_data_array = []
 forrestal_Rc_39_5_data = []
-forrestal_Rc_39_5_data_array =[]
+forrestal_Rc_39_5_data_array = []
 forrestal_Rc_46_2_data = []
-forrestal_Rc_46_2_data_array =[]
+forrestal_Rc_46_2_data_array = []
 
 # Add list and array of data
 forrestal_Rc_36_6_data = pd.read_csv(file1, header=0, sep=',', usecols=[2, 3, 4, 6])
