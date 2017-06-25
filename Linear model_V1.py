@@ -1,11 +1,12 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 import Data_Import as di
+import numpy as np
 
 # Simulate outcome variable
-Y = di.forrestal_Rc_39_5_data_array[:, 3]
-# hi hi ha ha
-sns.distplot(Y)
+Y = di.forrestal_Rc_39_5_data_array[:, 2]
+
+sns.distplot(Y, bins=len(Y))
 
 from pymc3 import Model, Normal, HalfNormal
 
@@ -14,13 +15,11 @@ basic_model = Model()
 with basic_model:
 
     # Priors for unknown model parameters
-    mass = Normal('mass', mu=0.004, sd=0.000012)
-    vel = Normal('vel', mu=815, sd=11.6)
-    me = Normal('me', mu=0.5, sd = 10)
-    sigma = HalfNormal('sigma', sd=1)
-
+    vel = Normal('vel', mu=1000, sd=11.6)
+    sigma = Normal('sigma', mu=np.mean(di.forrestal_Rc_39_5_data_array[:, 3]),
+                   sd = np.std(di.forrestal_Rc_39_5_data_array[:, 3] ))
     # Expected value of outcome
-    pen = 1000*(vel**2)*me*(((3*mass+0.00053)/95855.41)/5.283)
+    pen = 1000*(vel**2)*0.42*(((3*0.004+0.00053)/95855.41)/5.283)
 
     # Likelihood (sampling distribution) of observations
     Y_obs = Normal('Y_obs', mu=pen, sd=sigma, observed=Y)
@@ -48,7 +47,9 @@ with basic_model:
 
 from pymc3 import traceplot, summary
 
-trace['me'][-5:]
+trace['vel'][-5:]
 traceplot(trace)
 summary(trace)
 plt.show()
+
+print(np.mean(Y), np.std(Y))
