@@ -1,14 +1,14 @@
-import matplotlib.pyplot as plt
-import seaborn as sns
 import Data_Import as di
+import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
 
 # Simulate outcome variable
 Y = di.forrestal_Rc_39_5_data_array[:, 2]
 
 sns.distplot(Y, bins=len(Y))
 
-from pymc3 import Model, Normal, HalfNormal
+from pymc3 import Model, Normal
 
 basic_model = Model()
 
@@ -30,7 +30,7 @@ map_estimate = find_MAP(model=basic_model)
 
 print(map_estimate)
 
-from pymc3 import NUTS, sample
+from pymc3 import sample
 from pymc3 import Slice
 from scipy import optimize
 
