@@ -1,0 +1,8 @@
+Shot number,Target length (mm),Projectile mass m(g),Projectile hardness Rc,Striking velocity Vs (m/s),"Pitch, yaw (degrees)",Penetration depth P (mm),Projectile length change ?L (mm),,,,
+1-0394,216,22.83,36.8,720,"1.0 D, 0",67.8,3.3,,,,
+1-0398,152,22.83,36.7,806,"1.75 D, 0",74.7,6.6,,,,
+1-0399,178,22.83,36.4,892,"0.75 U, 0.5 L",84.1,9.4,,,,
+1-0395,216,22.80,36.4,1042,"0, 0",41.6,,,,,
+1-0396,241,22.83,36.7,1216,"0.5 U, 0.25 R",50.7,,,,,
+8-0106,241,22.83,36.4,2479,"1.75 D, 0.25 L",137.9,,,,,
+
