@@ -5,9 +5,9 @@ import seaborn as sns
 sns.set()
 
 # import data from CVS
-file1 = 'Experimental Data/Forrestal/Forrestal _Rc_36_6.csv'
-file2 = 'Experimental Data/Forrestal/Forrestal_Rc_39_5.csv'
-file3 = 'Experimental Data/Forrestal/Forrestal_Rc_ 46_2.csv'
+file1 = 'Forrestal _Rc_36_6.csv'
+file2 = 'Forrestal_Rc_39_5.csv'
+file3 = 'Forrestal_Rc_ 46_2.csv'
 
 # Define arrays
 forrestal_Rc_36_6_data = []
