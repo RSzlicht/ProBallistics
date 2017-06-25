@@ -3,7 +3,7 @@ import pandas as pd
 import seaborn as sns
 
 sns.set()
-#hey man
+
 # import data from CVS
 file1 = 'Forrestal _Rc_36_6.csv'
 file2 = 'Forrestal_Rc_39_5.csv'
