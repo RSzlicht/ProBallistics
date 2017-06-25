@@ -1,10 +1,10 @@
-import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
 import seaborn as sns
+import Data_Import as di
 
 # Simulate outcome variable
-Y = pd.read_csv('pen.csv')
+Y = di.forrestal_Rc_39_5_data_array[:, 3]
+# hihi
 sns.distplot(Y)
 
 from pymc3 import Model, Normal, HalfNormal
