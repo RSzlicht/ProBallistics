@@ -29,4 +29,3 @@ forrestal_Rc_46_2_data_array = np.array(forrestal_Rc_46_2_data)
 print(forrestal_Rc_36_6_data.head(0), forrestal_Rc_36_6_data_array)
 print(forrestal_Rc_39_5_data.head(0), forrestal_Rc_39_5_data_array)
 print(forrestal_Rc_46_2_data.head(0), forrestal_Rc_46_2_data_array)
-
