@@ -2,47 +2,48 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import math as math
 
 # import data from CVS
-file1 = 'AerMet 100 Rc 53.csv'
-file2 = 'VAR 4340 Rc 38.csv'
-
-# Define arrays
-forrestal_AerMet_100_data = []
-forrestal_AerMet_100_data_array = []
-forrestal_VAR_4340_data = []
-forrestal_VAR_4340_data_array = []
+file1 = 'Penetration_data.csv'
 
 # Add list and array of data
-forrestal_AerMet_100_data = pd.read_csv(file1, header=0, sep=',')
-forrestal_VAR_4340_data = pd.read_csv(file2, header=0, sep=',')
+forrestal_Penetration_data = pd.read_csv(file1, header=0, sep=',')
 
-forrestal_AerMet_100_data_array = np.array(forrestal_AerMet_100_data)
-forrestal_VAR_4340_data_array = np.array(forrestal_VAR_4340_data)
+forrestal_AerMet_mass_data = pd.read_csv(file1, header=0, sep=',', nrows=14, usecols=[3])
+forrestal_VAR_mass_data = pd.read_csv(file1, header=0, sep=',', skiprows=range(1,15),usecols=[3])
 
-# Get statistical parameters
-AerMet_mass_mean, AerMet_mass_sd, \
-AerMet_Rc_mean, AerMet_Rc_sd = (np.mean(forrestal_AerMet_100_data["Mass (g)"]),
-                                np.std(forrestal_AerMet_100_data["Mass (g)"]),
-                                np.mean(forrestal_AerMet_100_data["Hardness Rc"]),
-                                np.std(forrestal_AerMet_100_data["Hardness Rc"]))
+#Analytical analysis
 
-VAR_mass_mean, VAR_mass_sd, \
-VAR_Rc_mean, VAR_Rc_sd = (np.mean(forrestal_VAR_4340_data["Mass (g)"]),
-                                np.std(forrestal_VAR_4340_data["Mass (g)"]),
-                                np.mean(forrestal_VAR_4340_data["Hardness Rc"]),
-                                np.std(forrestal_VAR_4340_data["Hardness Rc"]))
+Pp_AerMet = 7890        #Density kg/m3
+Pp_VAR = 7830        #Density kg/m3
+Rt = 2*10e9            # Static target resistance (N/m2)
+b = 0.0201          # Plastic flow resistance (g/cm3)
+Length = 59.3       # Penetrator length (mm)
 
-fig=plt.figure()
-ax1 = fig.add_subplot(1,2,1)
-ax2=fig.add_subplot(1,2,2)
+# Calculate analytical P/L
+vel = (list(range(0, 3050, 50)))
 
-ax1.scatter(forrestal_AerMet_100_data["Striking velocity Vs (m/s)"],
-            forrestal_AerMet_100_data["P/L"])
-ax1.scatter(forrestal_VAR_4340_data["Striking velocity Vs (m/s)"],
-            forrestal_VAR_4340_data["P/L"])
+PonL_VAR = []
+PonL_AerMet = []
 
-ax2.hist(forrestal_AerMet_100_data["Mass (g)"])
-ax2.hist(forrestal_VAR_4340_data["Mass (g)"])
+for x in vel:
+    PonL_VAR.append((Pp_VAR/(2*b))*math.log(1+((b*x**2)/Rt)))
+    PonL_AerMet.append((Pp_AerMet/(2*b))*math.log(1+((b*x**2)/Rt)))
 
+vel = {"Velocity":vel}
+vel = pd.DataFrame(vel)
+
+PonL_VAR = {"PonL_VAR":PonL_VAR}
+PonL_VAR = pd.DataFrame(PonL_VAR)
+
+PonL_AerMet = {"PonL_AerMet":PonL_AerMet}
+PonL_AerMet = pd.DataFrame(PonL_AerMet)
+
+data = pd.concat([vel, PonL_VAR, PonL_AerMet], axis=1)
+print(data)
+
+#Plot data
+sns.lmplot(x="Striking velocity Vs (m/s)", y="P/L", data=forrestal_Penetration_data, hue="Penetrator", fit_reg=False)
+sns.lmplot(x='Velocity', y='PonL_VAR', data=data)
 plt.show()
