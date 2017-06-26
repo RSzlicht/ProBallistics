@@ -10,8 +10,13 @@ file1 = 'Penetration_data.csv'
 # Add list and array of data
 forrestal_Penetration_data = pd.read_csv(file1, header=0, sep=',')
 
-forrestal_AerMet_mass_data = pd.read_csv(file1, header=0, sep=',', nrows=14, usecols=[3])
+forrestal_AerMet_mass = pd.read_csv(file1, header=0, sep=',', nrows=14, usecols=[3])
+forrestal_AerMet_vel = pd.read_csv(file1, header=0, sep=',', nrows=14, usecols=[1])
+forrestal_AerMet_PonL = pd.read_csv(file1, header=0, sep=',', nrows=14, usecols=[6])
+
 forrestal_VAR_mass_data = pd.read_csv(file1, header=0, sep=',', skiprows=range(1,15),usecols=[3])
+forrestal_VAR_vel = pd.read_csv(file1, header=0, sep=',',skiprows=range(1,15), usecols=[1])
+forrestal_VAR_PonL = pd.read_csv(file1, header=0, sep=',', skiprows=range(1,15), usecols=[6])
 
 #Analytical analysis
 
@@ -41,13 +46,22 @@ PonL_AerMet = {"PonL_AerMet":PonL_AerMet}
 PonL_AerMet_pd = pd.DataFrame(PonL_AerMet)
 
 data_pd = pd.concat([vel_pd, PonL_VAR_pd, PonL_AerMet_pd], axis=1)
-print(data_pd)
 
 #Plot data
+plt.subplot(2, 1, 1)
+plt.plot(vel_pd, PonL_VAR_pd, label='Poncelet')
+plt.plot(forrestal_VAR_vel, forrestal_VAR_PonL,'.-', label= 'Forrestal et al')
+plt.title('VAR penetrator results')
+plt.ylabel('P/L')
+plt.legend()
 
-plt.scatter(vel_pd, PonL_AerMet_pd, color='r')
-plt.scatter(vel_pd, PonL_VAR_pd, color='b')
-plt.scatter(forrestal_Penetration_data["Striking velocity Vs (m/s)"],forrestal_Penetration_data["P/L"], color='g')
-plt.xlabel("Velocity")
-plt.ylabel("P/L")
+plt.subplot(2, 1, 2)
+plt.plot(vel_pd, PonL_AerMet_pd, label='Poncelet')
+plt.plot(forrestal_AerMet_vel, forrestal_AerMet_PonL, '.-', label = 'Forrestal et al.')
+plt.title('AerMet penetrator results')
+plt.xlabel('Velocity (m/s)')
+plt.ylabel('P/L')
+plt.legend()
+plt.show()
+
 plt.show()
