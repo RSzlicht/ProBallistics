@@ -24,7 +24,7 @@ AerMet_pen = data['Penetration (mm)'][20:34]
 model_vel = data['velocity (m/s)'][34:]
 model_pen = data['Penetration (mm)'][34:]
 
-nReps = 100000
+nReps = 1000
 
 VAR_MC_pen_1=np.array([])
 AerMet_MC_pen_1=np.array([])
@@ -34,10 +34,9 @@ Term2=data['Term2']
 Term3=data['Term3']
 Term4=data['Term4']
 
-Penetration=[]
 Penetration_data={}
-
-velocity=[0,200,400,600,800,1000,1200,1400,1600,1800,2000,]
+Penetration_velocity = []
+velocity = [0,200,400,600,800,1000,1200,1400,1600,1800,2000]
 
 def MC_pen(VAR_mass_mean,VAR_mass_std, x):
     mass_rnd = np.random.normal(VAR_mass_mean, VAR_mass_std)
@@ -48,12 +47,28 @@ def MC_pen(VAR_mass_mean,VAR_mass_std, x):
 
 for x in range(0, 11):
     Penetration=[]
+    Velocity1=[]
     velocity_value = velocity[x]
 
     for i in range(0,nReps):
         Penetration.append(MC_pen(VAR_mass_mean, VAR_mass_std, x))
-        Penetration_data[velocity_value] = Penetration
+        Velocity1.append(velocity_value)
+        Penetration_data[velocity_value] = (Velocity1, Penetration)
 
 Penetration_data_pd=pd.DataFrame(Penetration_data)
-print(Penetration_data_pd)
+print(Penetration_data_pd[200][:][1])
+
+# plot data
+plt.plot(VAR_vel, VAR_pen,'.-', label='VAR 4340, Rc = 38.3', color = 'g')
+plt.plot(AerMet_vel, AerMet_pen,'.-',label='AerMet 100, Rc = 53.3', color='b')
+plt.plot(model_vel , model_pen, label= 'Model', color = 'y')
+
+for x in velocity:
+    plt.plot(Penetration_data_pd[x][:][0],Penetration_data_pd[x][:][1], label = x, color='r')
+
+plt.title('Penetrator results')
+plt.ylabel('Penetration (mm)')
+plt.xlabel('Velocity (m/s)')
+plt.legend()
+plt.show()
 
