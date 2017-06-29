@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import math as math
 
 # import data
-data = pd.ExcelFile('Data.xlsx')
-data = data.parse('Sheet4')
+data = pd.ExcelFile('Pen_Data.xlsx')
+data = data.parse('csv')
 data=pd.DataFrame(data)
 
 VAR_vel=data['velocity (m/s)'][:20]
@@ -24,7 +24,7 @@ AerMet_pen = data['Penetration (mm)'][20:34]
 model_vel = data['velocity (m/s)'][34:]
 model_pen = data['Penetration (mm)'][34:]
 
-nReps = 1000
+nReps = 7
 
 VAR_MC_pen_1=np.array([])
 AerMet_MC_pen_1=np.array([])
@@ -56,7 +56,7 @@ for x in range(0, 11):
         Penetration_data[velocity_value] = (Velocity1, Penetration)
 
 Penetration_data_pd=pd.DataFrame(Penetration_data)
-print(Penetration_data_pd[200][:][1])
+print(Penetration_data_pd)
 
 # plot data
 plt.plot(VAR_vel, VAR_pen,'.-', label='VAR 4340, Rc = 38.3', color = 'g')
@@ -72,3 +72,14 @@ plt.xlabel('Velocity (m/s)')
 plt.legend()
 plt.show()
 
+#Write data into excel
+writer = pd.ExcelWriter('Data.xlsx')
+Penetration_data_pd.to_excel(writer,'Data')
+writer.save()
+
+data = Penetration_data_pd[200]
+data={'datax':data[:][0],'datay':data[:][1] }
+
+tips = sns.load_dataset("tips")
+
+print(Penetration_data_pd)
