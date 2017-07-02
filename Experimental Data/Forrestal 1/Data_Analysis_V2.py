@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import math as math
 
 # import data
-data = pd.ExcelFile('Data.xlsx')
-data = data.parse('Sheet4')
+data = pd.ExcelFile('Pen_Data.xlsx')
+data = data.parse('csv')
 data=pd.DataFrame(data)
 
 VAR_vel=data['velocity (m/s)'][:20]
