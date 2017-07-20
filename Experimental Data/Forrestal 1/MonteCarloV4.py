@@ -24,7 +24,7 @@ AerMet_pen = data['Penetration (mm)'][20:34]
 model_vel = data['velocity (m/s)'][34:]
 model_pen = data['Penetration (mm)'][34:]
 
-nReps = 10000
+nReps = 100
 
 VAR_MC_pen_1=np.array([])
 AerMet_MC_pen_1=np.array([])

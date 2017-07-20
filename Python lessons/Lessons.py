@@ -3,6 +3,9 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import math as math
+import plotly
+plotly.tools.set_credentials_file(username='RichSzlicht', api_key='QIhnCs8ZDCTXILkM0ZSI')
+
 
 data = pd.ExcelFile('cylinders.xlsx')
 data = data.parse('Sheet1')
