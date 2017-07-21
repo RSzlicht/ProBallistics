@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 
 expVelocity = [0.496,0.572,0.781,0.821,0.841,0.932,0.967,1.037,1.193,1.337,1.515,1.802,2.052,2.204,2.777,3.075]
 expPenetration = [37.6,48.1,72.7,84.3,91.4,96.5,94.4,64.6,50.7,61.8,76,94.3,113.9,124.6,147,151]
@@ -58,23 +59,32 @@ def MC_pen(lengthInitialMean, lengthInitialSD, densityProjectileMean,
             pen = pen + dp
 
         Penetration=pen
+
     return Penetration * 10 ** 6
 
 Penetration = []
 Velocity = []
 
+nReps = 2
+
 for vel in range(0,3500,100):
-    vel = vel/1000
-    pen = MC_pen(lengthInitialMean, lengthInitialSD, densityProjectileMean,
-    densityProjectileSD, densityTargetMean, densityTargetSD ,YpMean,
-    YpSD,RtMean, RtSD, vel)
+    vel = vel / 1000
+    for i in range(0, nReps):
+        pen = MC_pen(lengthInitialMean, lengthInitialSD, densityProjectileMean,
+                    densityProjectileSD, densityTargetMean, densityTargetSD ,YpMean,
+                    YpSD,RtMean, RtSD, vel)
 
-    Penetration.append(pen)
-    Velocity.append(vel)
+        Penetration.append(pen)
+        Velocity.append(vel)
 
-print(Penetration)
-print(Velocity)
+        Penetration_data[vel] = Penetration
+        Velocity_data[vel] = Velocity
 
-plt.plot(Velocity, Penetration)
-plt.plot(expVelocity, expPenetration, 'x')
-plt.show()
+Penetration_data_pd = pd.DataFrame([Penetration])
+
+print(Penetration_data_pd)
+
+#Write data into excel
+writer = pd.ExcelWriter('Data1.xlsx')
+Penetration_data_pd.to_excel(writer,'Data1')
+writer.save()
