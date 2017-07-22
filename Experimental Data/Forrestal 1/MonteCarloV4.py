@@ -99,3 +99,5 @@ writer.save()
 
 sns.lmplot(x='velocity', y='Penetration', data=df_comb, x_jitter=.05, order=2, markers='+')
 sns.plt.show()
+
+print(Penetration_data_pd)
