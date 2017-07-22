@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import seaborn as sns
 
 # experimental data points for validation
 expVelocity = [0.496,0.572,0.781,0.821,0.841,0.932,0.967,1.037,1.193,1.337,1.515,1.802,2.052,2.204,2.777,3.075]
@@ -8,19 +9,19 @@ expPenetration = [37.6,48.1,72.7,84.3,91.4,96.5,94.4,64.6,50.7,61.8,76,94.3,113.
 
 # initial statistical parameters
 lengthInitialMean = 0.000074
-lengthInitialSD = 0
+lengthInitialSD  =lengthInitialMean / 100
 
 densityProjectileMean = 17300
-densityProjectileSD = 0
+densityProjectileSD = densityProjectileMean / 100
 
 densityTargetMean = 7000
-densityTargetSD = 0
+densityTargetSD = densityTargetMean / 100
 
 YpMean = 7570
-YpSD = 0
+YpSD = YpMean / 100
 
 RtMean = 4000
-RtSD = 0
+RtSD = RtMean / 100
 
 dt = 0.000001
 Penetration_data={}
@@ -71,10 +72,10 @@ def MC_pen(lengthInitialMean, lengthInitialSD, densityProjectileMean,
     return Penetration * 10 ** 6
 
 # Number of MC simlations
-nReps = 1000
-
+nReps = 10000
+Velocity = []
 for vel in range(0,3500,100):
-
+    Velocity.append(vel/1000)
     Penetration = []
     vel = vel / 1000
 
@@ -89,7 +90,21 @@ for vel in range(0,3500,100):
 
 Penetration_data_pd = pd.DataFrame(Penetration_data)
 
-print(Penetration_data_pd)
+avg=[]
+for vel in Penetration_data_pd:
+    avg.append(np.mean(Penetration_data_pd[vel]))
+    sns.distplot(Penetration_data_pd[vel])
+    sns.plt.show()
+
+fig, ax = plt.subplots()
+plt.plot(Velocity, avg, label = 'model')
+plt.plot(expVelocity, expPenetration, label = 'experiment')
+ax.set_xlabel('Velocity (km/s)')
+ax.set_ylabel('Penetration (mm)')
+ax.legend()
+
+plt.show()
+
 
 #Write data into excel
 writer = pd.ExcelWriter('Data1.xlsx')
